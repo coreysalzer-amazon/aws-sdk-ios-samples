@@ -15,15 +15,15 @@
 
 import UIKit
 import AWSCognitoAuth
+import Alamofire
 
 class ViewController: UITableViewController, AWSCognitoAuthDelegate {
-
-    
+  
     @IBOutlet weak var signInButton: UIBarButtonItem!
     @IBOutlet weak var signOutButton: UIBarButtonItem!
     var auth: AWSCognitoAuth = AWSCognitoAuth.default()
     var session: AWSCognitoAuthUserSession?
-    var firstLoad: Bool = true
+    var playlists:[Playlist] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +36,9 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if(self.firstLoad){
+        if(self.session == nil){
             self.signInTapped(signInButton)
         }
-        self.firstLoad = false
     }
     
     func getViewController() -> UIViewController {
@@ -47,27 +46,38 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        let token = getBestToken()
+//        if((token) != nil){
+//            return token!.claims.count
+//        }
+//        return 0
+        
         let token = getBestToken()
-        if((token) != nil){
-            return token!.claims.count
+        if((token) == nil){
+            return 0
         }
-        return 0
+        return self.playlists.count
     }
-    
-    
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        let token = getBestToken()
-        let key = Array(token!.claims.keys)[indexPath.row]
-        cell.textLabel?.text = key as? String
-        cell.detailTextLabel?.text = (token!.claims[key] as AnyObject).description
+//        let token = getBestToken()
+//        let key = Array(token!.claims.keys)[indexPath.row]
+//        cell.textLabel?.text = key as? String
+//        cell.detailTextLabel?.text = (token!.claims[key] as AnyObject).description
+        
+        cell.textLabel?.text = playlists[indexPath.row].name
+        cell.detailTextLabel?.text = String(playlists[indexPath.row].songs.count) + " songs"
+        
         return cell
     }
     
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        self.performSegue(withIdentifier: "showPlaylistDetails", sender: indexPath);
+//    }
 
-    
 
     func getBestToken() -> AWSCognitoAuthUserSessionToken? {
         if(self.session != nil){
@@ -82,6 +92,57 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
     
     func refresh () {
         DispatchQueue.main.async {
+            if let token : AWSCognitoAuthUserSessionToken = self.getBestToken() {
+                
+//                let headers : HTTPHeaders = [
+//                    "Authorization": token.tokenString
+//                ]
+//
+//                debugPrint(token.tokenString)
+//
+//                Alamofire.request("https://1rk5wjwn6j.execute-api.us-east-1.amazonaws.com/prod/playlists", headers: headers)
+//                    .responseJSON { response in
+//                        debugPrint(response)
+//
+//                        switch response.result {
+//                        case .success:
+//                            print("Validation Successful")
+//                        case .failure(let error):
+//                            print(error)
+//                        }
+//
+//                        if let json = response.result.value as? NSArray {
+//                            self.playlists = []
+//
+//                            for case let playlistJson as NSDictionary in json {
+//                                self.playlists.append(Playlist(json: playlistJson))
+//                            }
+//
+//                            self.tableView.reloadData()
+//                        }
+                }
+            
+                let client = PLAYLISTIFYPlaylistifyClient.default()
+                
+                client.playlistsGet().continueWith(block: {(task: AWSTask) -> AnyObject? in
+                    if let error = task.error {
+                        print("Error: \(error)")
+                    }
+                    else if let result = task.result {
+                        print(result)
+                        print(result.playlists)
+                        for playlist in result.playlists {
+                            print(playlist.ID)
+                            print(playlist.user!)
+                            print(playlist.songs!)
+                        }
+                        
+                        
+                    }
+                    return nil
+                })
+//            }
+            
             self.signInButton.isEnabled = self.session == nil
             self.signOutButton.isEnabled = self.session != nil
             self.tableView.reloadData()
@@ -121,9 +182,20 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
             }else {
                 self.session = nil
                 self.alertWithTitle("Info", message: "Session completed successfully")
+                self.playlists = []
             }
             self.refresh()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if (segue.identifier == "showPlaylistDetails") {
+            let controller = segue.destination as! PlaylistDetailViewController
+            let row = tableView.indexPathForSelectedRow!.row;
+            controller.songs = playlists[row].songs as [Song]
+        }
+    }
+
 }
 

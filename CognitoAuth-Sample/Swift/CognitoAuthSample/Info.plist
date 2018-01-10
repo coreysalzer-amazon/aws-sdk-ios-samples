@@ -45,15 +45,15 @@
                     <string>openid</string>
                 </array>
                 <key>CognitoAuthSignInRedirectUri</key>
-                <string>myapp://SETME</string>
+                <string>myapp://</string>
                 <key>CognitoAuthSignOutRedirectUri</key>
-                <string>myapp://SETME</string>
+                <string>myapp://</string>
                 <key>CognitoAuthWebDomain</key>
-                <string>https://SETME</string>
+                <string>https://playlistify-auth.auth.us-east-1.amazoncognito.com</string>
                 <key>CognitoUserPoolAppClientId</key>
-                <string>SETME</string>
+                <string>4ood3na1ad7ihr3rqdb4ro0gd9</string>
                 <key>CognitoUserPoolAppClientSecret</key>
-                <string>SETME or Remove key if App client has no secret</string>
+                <string>na7bjn5s33a3s89fjucru3q16e7i3ad7e1p1dhvjck87rqloam4</string>
             </dict>
         </dict>
     </dict>

@@ -15,6 +15,8 @@
 
 import UIKit
 import AWSCognitoAuth
+import AWSCognitoIdentityProvider
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +26,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Need to let CognitoAuth handle redirects so it can extract tokens
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         return AWSCognitoAuth.default().application(app, open: url, options: options)
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+//
+//        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca")
+//        let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
+//        AWSServiceManager.default().defaultServiceConfiguration = configuration
+//
+        
+//        let serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: nil)
+//        let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "4ood3na1ad7ihr3rqdb4ro0gd9", clientSecret: "na7bjn5s33a3s89fjucru3q16e7i3ad7e1p1dhvjck87rqloam4", poolId: "us-east-1_ESgINWmXW")
+//        AWSCognitoIdentityUserPool.registerCognitoIdentityUserPool(with: userPoolConfiguration, forKey: "UserPool")
+//        let pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
+//        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca", identityProviderManager:pool)
+//
+//
+        
+        var serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: nil)
+        AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
+        let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "4ood3na1ad7ihr3rqdb4ro0gd9", clientSecret: "na7bjn5s33a3s89fjucru3q16e7i3ad7e1p1dhvjck87rqloam4", poolId: "us-east-1_ESgINWmXW")
+       AWSCognitoIdentityUserPool.registerCognitoIdentityUserPool(with: userPoolConfiguration, forKey: "UserPool")
+        let pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca", identityProviderManager:pool)
+        serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
+
+
+        return true
     }
 
 
