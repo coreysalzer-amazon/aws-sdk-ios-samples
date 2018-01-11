@@ -4,9 +4,12 @@ platform :ios, '9.0'
 use_frameworks!
 
 target :'CognitoAuthSample' do
+    pod 'AWSUserPoolsSignIn', '~> 2.6.6'
     pod 'AWSMobileClient', '~> 2.6.6'
+    pod 'AWSAuthCore', '~> 2.6.1'
     pod 'AWSCognitoAuth', '~> 2.6.7'
     pod 'AWSCognitoIdentityProvider'
+    pod 'AWSCognitoIdentityProviderASF'
     pod 'AWSCognito'
     pod 'AWSAPIGateway', '~> 2.6.2'
     pod 'Alamofire', '~> 4.5'

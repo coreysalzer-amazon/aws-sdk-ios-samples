@@ -16,6 +16,8 @@
 import UIKit
 import AWSCognitoAuth
 import AWSCognitoIdentityProvider
+import AWSCore
+import AWSCognito
 
 
 @UIApplicationMain
@@ -52,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca", identityProviderManager:pool)
         serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
-
+    
 
         return true
     }
