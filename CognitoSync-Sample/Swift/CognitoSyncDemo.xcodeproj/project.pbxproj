@@ -232,12 +232,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32DD04181B9F890000B98D7E /* Build configuration list for PBXNativeTarget "CognitoSyncDemo" */;
 			buildPhases = (
-				C46104205B02585AB37F9639 /* 📦 Check Pods Manifest.lock */,
+				C46104205B02585AB37F9639 /* [CP] Check Pods Manifest.lock */,
 				32DD03F51B9F890000B98D7E /* Sources */,
 				32DD03F61B9F890000B98D7E /* Frameworks */,
 				32DD03F71B9F890000B98D7E /* Resources */,
-				DC761FB4998AEE85BABD472F /* 📦 Embed Pods Frameworks */,
-				6F15FEFEFA54822FB50FA601 /* 📦 Copy Pods Resources */,
+				DC761FB4998AEE85BABD472F /* [CP] Embed Pods Frameworks */,
+				6F15FEFEFA54822FB50FA601 /* [CP] Copy Pods Resources */,
 				32DD04481BA1F82B00B98D7E /* ShellScript */,
 			);
 			buildRules = (
@@ -340,45 +340,68 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 447bc42e7fc3ecfd9f954eb0c05f575c4547a1f3 db437d522b5c6d8a585d3d1b76620ed9b042f33f9a909d9d9d2443870ed5b6ef";
 		};
-		6F15FEFEFA54822FB50FA601 /* 📦 Copy Pods Resources */ = {
+		6F15FEFEFA54822FB50FA601 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CognitoSyncDemo/Pods-CognitoSyncDemo-resources.sh",
+				"${PODS_ROOT}/Digits/DigitsKit.framework/Versions/A/Resources/DigitsKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle",
+				"${PODS_ROOT}/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1/GooglePlus.bundle",
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CognitoSyncDemo/Pods-CognitoSyncDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C46104205B02585AB37F9639 /* 📦 Check Pods Manifest.lock */ = {
+		C46104205B02585AB37F9639 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CognitoSyncDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DC761FB4998AEE85BABD472F /* 📦 Embed Pods Frameworks */ = {
+		DC761FB4998AEE85BABD472F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CognitoSyncDemo/Pods-CognitoSyncDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
+				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

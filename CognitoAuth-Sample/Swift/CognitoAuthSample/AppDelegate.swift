@@ -46,16 +46,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //
         
-        var serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: nil)
-        AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
-        let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "4ood3na1ad7ihr3rqdb4ro0gd9", clientSecret: "na7bjn5s33a3s89fjucru3q16e7i3ad7e1p1dhvjck87rqloam4", poolId: "us-east-1_ESgINWmXW")
-       AWSCognitoIdentityUserPool.registerCognitoIdentityUserPool(with: userPoolConfiguration, forKey: "UserPool")
-        let pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca", identityProviderManager:pool)
-        serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
-    
+        //var serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: nil)
+        //AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
+        //let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "4ood3na1ad7ihr3rqdb4ro0gd9", clientSecret: "na7bjn5s33a3s89fjucru3q16e7i3ad7e1p1dhvjck87rqloam4", poolId: "us-east-1_ESgINWmXW")
+       //AWSCognitoIdentityUserPool.registerCognitoIdentityUserPool(with: userPoolConfiguration, forKey: "UserPool")
+        
+        //let pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
+        //let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca", identityProviderManager:pool)
 
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:054cb6b9-addf-4e9f-b91d-b6b241dcddca")
+        let serviceConfiguration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
+
+        
         return true
     }
 

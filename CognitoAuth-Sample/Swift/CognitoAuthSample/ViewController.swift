@@ -16,6 +16,7 @@
 import UIKit
 import AWSCognitoAuth
 import Alamofire
+import AWSCore
 
 class ViewController: UITableViewController, AWSCognitoAuthDelegate {
   
@@ -94,54 +95,70 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
         DispatchQueue.main.async {
             if let token : AWSCognitoAuthUserSessionToken = self.getBestToken() {
                 
-//                let headers : HTTPHeaders = [
-//                    "Authorization": token.tokenString
-//                ]
-//
-//                debugPrint(token.tokenString)
-//
-//                Alamofire.request("https://1rk5wjwn6j.execute-api.us-east-1.amazonaws.com/prod/playlists", headers: headers)
-//                    .responseJSON { response in
-//                        debugPrint(response)
-//
-//                        switch response.result {
-//                        case .success:
-//                            print("Validation Successful")
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//
-//                        if let json = response.result.value as? NSArray {
-//                            self.playlists = []
-//
-//                            for case let playlistJson as NSDictionary in json {
-//                                self.playlists.append(Playlist(json: playlistJson))
-//                            }
-//
-//                            self.tableView.reloadData()
-//                        }
+                let headers : HTTPHeaders = [
+                    "Authorization": token.tokenString
+                ]
+                
+                print("identity token")
+                debugPrint(token.tokenString)
+                print("access token")
+                debugPrint((self.session?.accessToken!)!.tokenString)
+                
+//            debugPrint(AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider.credentials().continueWith(block: {(task: AWSTask) -> AnyObject? in
+//                    if let error = task.error {
+//                        print("Error: \(error)")
+//                    }
+//                    else if let result = task.result {
+//                        print(result)
+//                        print(result.accessKey)
+//                        print(result.secretKey)
+//                    }
+//                    return nil
+//                }))
+
+                Alamofire.request("https://1rk5wjwn6j.execute-api.us-east-1.amazonaws.com/prod/playlists", headers: headers)
+                    .responseJSON { response in
+                        debugPrint(response)
+
+                        switch response.result {
+                        case .success:
+                            print("Validation Successful")
+                        case .failure(let error):
+                            print(error)
+                        }
+
+                        if let json = response.result.value as? NSDictionary {
+                            self.playlists = []
+                            if let playlistArray = json.value(forKey: "playlists") as? NSArray {
+                                for case let playlistJson as NSDictionary in playlistArray {
+                                    self.playlists.append(Playlist(json: playlistJson))
+                                }
+
+                                self.tableView.reloadData()
+                            }
+                        }
                 }
             
-                let client = PLAYLISTIFYPlaylistifyClient.default()
-                
-                client.playlistsGet().continueWith(block: {(task: AWSTask) -> AnyObject? in
-                    if let error = task.error {
-                        print("Error: \(error)")
-                    }
-                    else if let result = task.result {
-                        print(result)
-                        print(result.playlists)
-                        for playlist in result.playlists {
-                            print(playlist.ID)
-                            print(playlist.user!)
-                            print(playlist.songs!)
-                        }
-                        
-                        
-                    }
-                    return nil
-                })
-//            }
+//                let client = PLAYLISTIFYPlaylistifyClient.default()
+//
+//                client.playlistsGet().continueWith(block: {(task: AWSTask) -> AnyObject? in
+//                    if let error = task.error {
+//                        print("Error: \(error)")
+//                    }
+//                    else if let result = task.result {
+//                        print(result)
+//                        print(result.playlists)
+//                        for playlist in result.playlists {
+//                            print(playlist.ID)
+//                            print(playlist.user!)
+//                            print(playlist.songs!)
+//                        }
+//
+//
+//                    }
+//                    return nil
+//                })
+            }
             
             self.signInButton.isEnabled = self.session == nil
             self.signOutButton.isEnabled = self.session != nil
@@ -170,6 +187,19 @@ class ViewController: UITableViewController, AWSCognitoAuthDelegate {
                 self.alertWithTitle("Error", message: (error! as NSError).userInfo["error"] as? String)
             }else {
                 self.session = session
+           
+                debugPrint(AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider)
+            debugPrint(AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider.credentials().continueWith(block: {(task: AWSTask) -> AnyObject? in
+                    if let error = task.error {
+                        print("Error: \(error)")
+                    }
+                    else if let result = task.result {
+                        print(result.accessKey)
+                        print(result.secretKey)
+                    }
+                    return nil
+                }))
+                
             }
             self.refresh()
         }
